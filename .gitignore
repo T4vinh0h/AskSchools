@@ -1,0 +1,4 @@
+teste-conexao.js
+node_modules/
+.env
+.DS_store
