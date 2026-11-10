@@ -119,6 +119,7 @@ function validarCurso(dados) {
   const descricao = texto(dados?.descricao);
   if (!nome || nome.length > 100) erroValidacao('Nome inválido.');
   if (!carga_horaria || carga_horaria <= 0 || carga_horaria > 4294967295) erroValidacao('Carga horária inválida.');
+  if (descricao.length > 2000) erroValidacao('Descrição muito longa (máximo 2000 caracteres).');
   return { nome, carga_horaria, descricao };
 }
 
