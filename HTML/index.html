@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<html lang="pt-BR">  <!-- idioma português -->
+<html lang="pt-BR"> <!-- idioma português -->
+
 <head>
-  <meta charset="UTF-8">  <!-- codificação UTF-8 -->
+  <meta charset="UTF-8"> <!-- codificação UTF-8 -->
   <!-- política de segurança: apenas recursos locais -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self'; style-src 'self'">
-  <link rel="stylesheet" href="CSS/style.css">  <!-- arquivo CSS -->
-  <title>Cadastro de alunos</title>  <!-- título da página -->
-  <script src="JAVASCRIPT/renderer.js" defer></script>  <!-- JS com defer -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+  <link rel="stylesheet" href="CSS/style.css"> <!-- arquivo CSS -->
+  <title>Cadastro de alunos</title> <!-- título da página -->
+  <script src="JAVASCRIPT/renderer.js" defer></script> <!-- JS com defer -->
 </head>
+
 <body>
   <header>
     <p class="subtitulo">ELECTRON + MYSQL</p>
@@ -20,25 +21,25 @@
       Sair
     </button>
   </header>
-  <form id="formulario">  <!-- formulário cadastro/edição -->
-    <h2 id="tituloFormulario">Novo aluno</h2>  <!-- título do formulário -->
-    <label for="nome">Nome</label>  <!-- rótulo nome -->
-    <input id="nome" maxlength="100" required>  <!-- campo nome -->
-    <label for="email">E-mail</label>  <!-- rótulo email -->
-    <input id="email" type="email" maxlength="150" required>  <!-- campo email -->
+  <form id="formulario"> <!-- formulário cadastro/edição -->
+    <h2 id="tituloFormulario">Novo aluno</h2> <!-- título do formulário -->
+    <label for="nome">Nome</label> <!-- rótulo nome -->
+    <input id="nome" maxlength="100" required> <!-- campo nome -->
+    <label for="email">E-mail</label> <!-- rótulo email -->
+    <input id="email" type="email" maxlength="150" required> <!-- campo email -->
     <label for="telefone">Telefone</label>
     <input id="telefone" type="tel" maxlength="20" required>
-    <button id="salvar" type="submit">Cadastrar</button>  <!-- botão salvar cadastro -->
-    <button id="cancelar" type="button" hidden>  <!-- botão cancelar (oculto) -->
+    <button id="salvar" type="submit">Cadastrar</button> <!-- botão salvar cadastro -->
+    <button id="cancelar" type="button" hidden> <!-- botão cancelar (oculto) -->
       Cancelar edição
     </button>
   </form>
-  <p id="mensagem" role="status"></p>  <!-- mensagens de feedback -->
+  <p id="mensagem" role="status"></p> <!-- mensagens de feedback -->
   <div class="acoesLista">
     <button id="recarregar" type="button">
       <span class="icone-atualizar">↻</span>
       Atualizar lista
-    </button>  <!-- botão recarregar -->
+    </button> <!-- botão recarregar -->
     <button type="button" id="imprimirRelatorio">
       Gerar relatório
     </button>
@@ -47,18 +48,19 @@
     <h2>Relatório de alunos cadastrados</h2>
     <p id="dataRelatorio"></p>
   </div>
-  <table>  <!-- tabela de alunos -->
+  <table> <!-- tabela de alunos -->
     <caption id="resumo">Carregando alunos...</caption>
-    <thead>  <!-- cabeçalho -->
+    <thead> <!-- cabeçalho -->
       <tr>
-        <th scope="col">Código</th>  <!-- coluna ID -->
-        <th scope="col">Nome</th>  <!-- coluna nome -->
-        <th scope="col">E-mail</th>  <!-- coluna email -->
-        <th scope="col">Telefone</th>  <!-- coluna Telefone -->
-        <th scope="col">Ações</th>  <!-- coluna ações -->
+        <th scope="col">Código</th> <!-- coluna ID -->
+        <th scope="col">Nome</th> <!-- coluna nome -->
+        <th scope="col">E-mail</th> <!-- coluna email -->
+        <th scope="col">Telefone</th> <!-- coluna Telefone -->
+        <th scope="col">Ações</th> <!-- coluna ações -->
       </tr>
     </thead>
-    <tbody id="lista"></tbody>  <!-- corpo (preenchido dinamicamente) -->
+    <tbody id="lista"></tbody> <!-- corpo (preenchido dinamicamente) -->
   </table>
 </body>
+
 </html>

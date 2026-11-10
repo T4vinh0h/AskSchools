@@ -1,64 +1,66 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy"
-content="default-src 'self'; script-src 'self'; style-src 'self'">
-<link rel="stylesheet" href="CSS/style.css">
-<title>Cadastro de cursos</title>
-<script src="JAVASCRIPT/cursos.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+    <link rel="stylesheet" href="CSS/style.css">
+    <title>Cadastro de cursos</title>
+    <script src="JAVASCRIPT/cursos.js" defer></script>
 </head>
+
 <body>
-<header>
-<p class="subtitulo">ELECTRON + MYSQL</p>
-<h1>Cadastro de cursos</h1>
-<button id="voltar" type="button" class="secundario">
-Voltar ao menu
-</button>
-<button id="sair" type="button" class="secundario">
-Sair
-</button>
-</header>
-<form id="formulario">
-<h2 id="tituloFormulario">Novo curso</h2>
-<label for="nome">Nome</label>
-<input id="nome" maxlength="100" required>
-<label for="carga_horaria">Carga horária em horas</label>
-<input id="carga_horaria" type="number" min="1" max="10000" required>
-<label for="descricao">Descrição (opcional)</label>
-<textarea id="descricao" rows="3"></textarea>
-<button id="salvar" type="submit">Cadastrar</button>
-<button id="cancelar" type="button" hidden>
-Cancelar edição
-</button>
-</form>
-<p id="mensagem" role="status"></p>
-<div class="acoesLista">
-<button id="recarregar" type="button">
-<span class="icone-atualizar">↻</span>
-Atualizar lista
-</button>
-<button type="button" id="imprimirRelatorio">
-Gerar relatório
-</button>
-</div>
-<div id="cabecalhoRelatorio">
-<h2>Relatório de cursos cadastrados</h2>
-<p id="dataRelatorio"></p>
-</div>
-<table>
-<caption id="resumo">Carregando cursos...</caption>
-<thead>
-<tr>
-<th scope="col">Código</th>
-<th scope="col">Nome</th>
-<th scope="col">Carga horária (h)</th>
-<th scope="col">Descrição</th>
-<th scope="col">Ações</th>
-</tr>
-</thead>
-<tbody id="lista"></tbody>
-</table>
+    <header>
+        <p class="subtitulo">ELECTRON + MYSQL</p>
+        <h1>Cadastro de cursos</h1>
+        <button id="voltar" type="button" class="secundario">
+            Voltar ao menu
+        </button>
+        <button id="sair" type="button" class="secundario">
+            Sair
+        </button>
+    </header>
+    <form id="formulario">
+        <h2 id="tituloFormulario">Novo curso</h2>
+        <label for="nome">Nome</label>
+        <input id="nome" maxlength="100" required>
+        <label for="carga_horaria">Carga horária em horas</label>
+        <input id="carga_horaria" type="number" min="1" max="10000" required>
+        <label for="descricao">Descrição (opcional)</label>
+        <textarea id="descricao" rows="3"></textarea>
+        <button id="salvar" type="submit">Cadastrar</button>
+        <button id="cancelar" type="button" hidden>
+            Cancelar edição
+        </button>
+    </form>
+    <p id="mensagem" role="status"></p>
+    <div class="acoesLista">
+        <button id="recarregar" type="button">
+            <span class="icone-atualizar">↻</span>
+            Atualizar lista
+        </button>
+        <button type="button" id="imprimirRelatorio">
+            Gerar relatório
+        </button>
+    </div>
+    <div id="cabecalhoRelatorio">
+        <h2>Relatório de cursos cadastrados</h2>
+        <p id="dataRelatorio"></p>
+    </div>
+    <table>
+        <caption id="resumo">Carregando cursos...</caption>
+        <thead>
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Carga horária (h)</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="lista"></tbody>
+    </table>
 </body>
+
 </html>
