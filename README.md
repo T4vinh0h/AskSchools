@@ -138,9 +138,9 @@ mysql -u root -p < Data/banco.sql
 
 ### O que o script faz:
 
-1. Cria o banco de dados `sistema_electron` com codificação UTF-8
+1. Cria o banco de dados `escola_electron_simples` com codificação UTF-8
 2. Cria a tabela `usuarios` para autenticação
-3. Insere usuário padrão: `admin` / `Aula@123`
+3. Insere usuário padrão: `admin` / `Aula#123`
 4. Cria a tabela `alunos` com campos:
    - `id` (auto-incremento)
    - `nome` (VARCHAR 100)
@@ -164,18 +164,18 @@ SELECT * FROM alunos;
 O projeto utiliza o arquivo `.env` para configurações sensíveis. Este arquivo já está configurado com valores padrão:
 
 ```env
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_USER=crud_app
-DB_PASSWORD=senacrs
-DB_NAME=sistema_electron
+DB_USER=escola_app
+DB_PASSWORD="EscolaDB#2026!"
+DB_NAME=escola_electron_simples
 ```
 
 ### Valores Padrão
 
-- **Usuário MySQL**: `crud_app`
-- **Senha MySQL**: `senacrs`
-- **Banco de dados**: `sistema_electron`
+- **Usuário MySQL**: `escola_app`
+- **Senha MySQL**: `EscolaDB#2026!`
+- **Banco de dados**: `escola_electron_simples`
 - **Host**: `localhost`
 - **Porta**: `3306`
 
@@ -190,7 +190,7 @@ Se você precisa alterar as credenciais:
 ### Credenciais de Login Padrão
 
 - **Usuário**: `admin`
-- **Senha**: `Aula@123`
+- **Senha**: `Aula#123`
 
 > ⚠️ **Nota de Segurança**: Em produção, altere estas credenciais e use senhas fortes.
 
