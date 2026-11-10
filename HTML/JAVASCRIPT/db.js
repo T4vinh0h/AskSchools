@@ -6,47 +6,59 @@ require('dotenv').config({
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT),
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
+  host: process.env.DB_HOST || '127.0.0.1',
+  port: Number(process.env.DB_PORT || 3306),
+  user: process.env.DB_USER || 'escola_app',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'escola_electron_simples',
+  charset: 'utf8mb4',
   connectionLimit: 3,
   connectTimeout: 5000
 });
 
-function falhar(texto) {
-  const erro = new Error(texto);
+function erroValidacao(mensagem) {
+  const erro = new Error(mensagem);
   erro.code = 'VALIDACAO';
   throw erro;
 }
 
-function validarId(id) {
-  if (!Number.isInteger(id) || id <= 0) {
-    falhar('Identificador inválido.');
+function texto(valor) {
+  return typeof valor === 'string' ? valor.trim() : '';
+}
+
+function numero(valor) {
+  return typeof valor === 'number' ? valor : Number(texto(valor));
+}
+
+function validarId(id, mensagem = 'Identificador inválido.') {
+  if (!Number.isInteger(id) || id < 1 || id > 4294967295) {
+    erroValidacao(mensagem);
   }
+  return id;
+}
+
+function falhar(texto) {
+  erroValidacao(texto);
 }
 
 function validarAluno(dados) {
-  const nome = typeof dados?.nome === 'string' ? dados.nome.trim() : '';
-  const email = typeof dados?.email === 'string' ? dados.email.trim() : '';
-  const telefone = typeof dados?.telefone === 'string' ? dados.telefone.trim() : '';
-  if (!nome || nome.length > 100) falhar('Nome inválido.');
+  const nome = texto(dados?.nome);
+  const email = texto(dados?.email);
+  const telefone = texto(dados?.telefone);
+  if (!nome || nome.length > 100) erroValidacao('Nome inválido.');
   if (email.length > 150 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    falhar('E-mail inválido.');
+    erroValidacao('E-mail inválido.');
   }
-  if (!telefone || telefone.length > 15) falhar('Telefone inválido.');
+  if (!telefone || telefone.length > 20) erroValidacao('Telefone inválido.');
   return { nome, email, telefone };
 }
 
 async function autenticar(dados) {
-  const usuario = typeof dados?.usuario === 'string'
-    ? dados.usuario.trim() : '';
-  const senha = typeof dados?.senha === 'string'
-    ? dados.senha : '';
+  const usuario = texto(dados?.usuario);
+  const senha = texto(dados?.senha);
   if (!usuario || usuario.length > 100 ||
-      !senha || senha.length > 128) {
-    falhar('Informe usuário e senha válidos.');
+    !senha || senha.length > 128) {
+    erroValidacao('Informe usuário e senha válidos.');
   }
 
   const senhaMd5 = createHash('md5')
@@ -58,7 +70,7 @@ async function autenticar(dados) {
     [usuario, senhaMd5]
   );
   if (!linhas.length) {
-    falhar('Usuário ou senha inválidos.');
+    erroValidacao('Usuário ou senha inválidos.');
   }
   return linhas[0];
 }
@@ -86,7 +98,7 @@ async function atualizar(dados) {
     'UPDATE alunos SET nome = ?, email = ?, telefone = ? WHERE id = ?',
     [nome, email, telefone, dados.id]
   );
-  if (!r.affectedRows) falhar('Aluno não encontrado.');
+  if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
 }
 
 async function excluir(id) {
@@ -94,7 +106,7 @@ async function excluir(id) {
   const [r] = await pool.execute(
     'DELETE FROM alunos WHERE id = ?', [id]
   );
-  if (!r.affectedRows) falhar('Aluno não encontrado.');
+  if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
   return { id };
 }
 
@@ -102,11 +114,11 @@ function fechar() { return pool.end(); }
 
 // Funções para cursos
 function validarCurso(dados) {
-  const nome = typeof dados?.nome === 'string' ? dados.nome.trim() : '';
-  const carga_horaria = typeof dados?.carga_horaria === 'number' ? dados.carga_horaria : null;
-  const descricao = typeof dados?.descricao === 'string' ? dados.descricao.trim() : '';
-  if (!nome || nome.length > 100) falhar('Nome inválido.');
-  if (!carga_horaria || carga_horaria <= 0 || carga_horaria > 10000) falhar('Carga horária inválida.');
+  const nome = texto(dados?.nome);
+  const carga_horaria = numero(dados?.carga_horaria);
+  const descricao = texto(dados?.descricao);
+  if (!nome || nome.length > 100) erroValidacao('Nome inválido.');
+  if (!carga_horaria || carga_horaria <= 0 || carga_horaria > 4294967295) erroValidacao('Carga horária inválida.');
   return { nome, carga_horaria, descricao };
 }
 
@@ -133,7 +145,7 @@ async function atualizarCurso(dados) {
     'UPDATE cursos SET nome = ?, carga_horaria = ?, descricao = ? WHERE id = ?',
     [nome, carga_horaria, descricao, dados.id]
   );
-  if (!r.affectedRows) falhar('Curso não encontrado.');
+  if (!r.affectedRows) erroValidacao('Curso não encontrado.');
 }
 
 async function excluirCurso(id) {
@@ -141,18 +153,18 @@ async function excluirCurso(id) {
   const [r] = await pool.execute(
     'DELETE FROM cursos WHERE id = ?', [id]
   );
-  if (!r.affectedRows) falhar('Curso não encontrado.');
+  if (!r.affectedRows) erroValidacao('Curso não encontrado.');
   return { id };
 }
 
 // Funções para matrículas
 function validarMatricula(dados) {
-  const aluno_id = typeof dados?.aluno_id === 'number' ? dados.aluno_id : null;
-  const curso_id = typeof dados?.curso_id === 'number' ? dados.curso_id : null;
-  const data_matricula = typeof dados?.data_matricula === 'string' ? dados.data_matricula : '';
-  if (!aluno_id || aluno_id <= 0) falhar('Aluno inválido.');
-  if (!curso_id || curso_id <= 0) falhar('Curso inválido.');
-  if (!data_matricula) falhar('Data da matrícula inválida.');
+  const aluno_id = numero(dados?.aluno_id);
+  const curso_id = numero(dados?.curso_id);
+  const data_matricula = texto(dados?.data_matricula);
+  if (!aluno_id || aluno_id <= 0) erroValidacao('Aluno inválido.');
+  if (!curso_id || curso_id <= 0) erroValidacao('Curso inválido.');
+  if (!data_matricula) erroValidacao('Data da matrícula inválida.');
   return { aluno_id, curso_id, data_matricula };
 }
 
@@ -181,7 +193,7 @@ async function excluirMatricula(id) {
   const [r] = await pool.execute(
     'DELETE FROM matriculas WHERE id = ?', [id]
   );
-  if (!r.affectedRows) falhar('Matrícula não encontrada.');
+  if (!r.affectedRows) erroValidacao('Matrícula não encontrada.');
   return { id };
 }
 

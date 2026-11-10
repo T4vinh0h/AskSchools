@@ -6,10 +6,10 @@ const lista = document.getElementById('lista');
 const mensagem = document.getElementById('mensagem');
 
 const imprimirRelatorio =
-document.getElementById('imprimirRelatorio');
+  document.getElementById('imprimirRelatorio');
 
 const dataRelatorio =
-document.getElementById('dataRelatorio');
+  document.getElementById('dataRelatorio');
 
 let ocupado = false;
 let idEdicao = null;
