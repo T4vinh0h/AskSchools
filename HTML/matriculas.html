@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy"
-content="default-src 'self'; script-src 'self'; style-src 'self'">
-<link rel="stylesheet" href="CSS/style.css">
-<title>Cadastro de matrículas</title>
-<script src="JAVASCRIPT/matriculas.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'">
+    <link rel="stylesheet" href="CSS/style.css">
+    <title>Cadastro de matrículas</title>
+    <script src="JAVASCRIPT/matriculas.js" defer></script>
 </head>
+
 <body>
-<header>
-<p class="subtitulo">ELECTRON + MYSQL</p>
-<h1>Cadastro de matrículas</h1>
-<button id="voltar" type="button" class="secundario">
-Voltar ao menu
-</button>
-<button id="sair" type="button" class="secundario">
-Sair
-</button>
-</header>
-<form id="formulario">
-<h2 id="tituloFormulario">Nova matrícula</h2>
-<label for="aluno">Aluno</label>
-<select id="aluno" required>
-<option value="">Selecione o aluno</option>
-</select>
-<label for="curso">Curso</label>
-<select id="curso" required>
-<option value="">Selecione o curso</option>
-</select>
-<label for="data_matricula">Data da matrícula</label>
-<input id="data_matricula" type="date" required>
-<button id="salvar" type="submit">Cadastrar</button>
-</form>
-<p id="mensagem" role="status"></p>
-<div class="acoesLista">
-<button id="recarregar" type="button">
-<span class="icone-atualizar">↻</span>
-Atualizar lista
-</button>
-</div>
-<table>
-<caption id="resumo">Carregando matrículas...</caption>
-<thead>
-<tr>
-<th scope="col">Código</th>
-<th scope="col">Aluno</th>
-<th scope="col">Curso</th>
-<th scope="col">Data da matrícula</th>
-<th scope="col">Ações</th>
-</tr>
-</thead>
-<tbody id="lista"></tbody>
-</table>
+    <header>
+        <p class="subtitulo">ELECTRON + MYSQL</p>
+        <h1>Cadastro de matrículas</h1>
+        <button id="voltar" type="button" class="secundario">
+            Voltar ao menu
+        </button>
+        <button id="sair" type="button" class="secundario">
+            Sair
+        </button>
+    </header>
+    <form id="formulario">
+        <h2 id="tituloFormulario">Nova matrícula</h2>
+        <label for="aluno">Aluno</label>
+        <select id="aluno" required>
+            <option value="">Selecione o aluno</option>
+        </select>
+        <label for="curso">Curso</label>
+        <select id="curso" required>
+            <option value="">Selecione o curso</option>
+        </select>
+        <label for="data_matricula">Data da matrícula</label>
+        <input id="data_matricula" type="date" required>
+        <button id="salvar" type="submit">Cadastrar</button>
+    </form>
+    <p id="mensagem" role="status"></p>
+    <div class="acoesLista">
+        <button id="recarregar" type="button">
+            <span class="icone-atualizar">↻</span>
+            Atualizar lista
+        </button>
+    </div>
+    <table>
+        <caption id="resumo">Carregando matrículas...</caption>
+        <thead>
+            <tr>
+                <th scope="col">Código</th>
+                <th scope="col">Aluno</th>
+                <th scope="col">Curso</th>
+                <th scope="col">Data da matrícula</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody id="lista"></tbody>
+    </table>
 </body>
+
 </html>
