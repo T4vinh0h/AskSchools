@@ -65,8 +65,7 @@ async function autenticar(dados) {
     .update(senha, 'utf8')
     .digest('hex');
   const [linhas] = await pool.execute(
-    'SELECT id, usuario FROM usuarios ' +
-    'WHERE usuario = ? AND senha = ? LIMIT 1',
+    'SELECT id, usuario FROM usuarios ' + 'WHERE usuario = ? AND senha = ? LIMIT 1',
     [usuario, senhaMd5]
   );
   if (!linhas.length) {

@@ -52,10 +52,15 @@ function botao(texto, acao) {
 }
 
 async function excluirCurso(id) {
+  console.log('Excluindo curso...');
   const r = conferir(await window.cursos.excluir(id));
-  if (r.cancelado) return;
+  if (r.cancelado) {
+    console.log('Exclusão cancelada');
+    return;
+  }
   if (idEdicao === id) limpar();
   await atualizarLista('Curso excluído.');
+  console.log('Curso excluído');
 }
 
 function acoesCurso(curso) {
@@ -139,8 +144,15 @@ formulario.addEventListener('submit', evento => {
       carga_horaria: parseInt(carga_horaria.value),
       descricao: descricao.value.trim()
     };
-    if (idEdicao === null) conferir(await window.cursos.criar(dados));
-    else conferir(await window.cursos.atualizar({ id: idEdicao, ...dados }));
+    if (idEdicao === null) {
+      console.log('Cadastrando curso...');
+      conferir(await window.cursos.criar(dados));
+      console.log('Curso cadastrado');
+    } else {
+      console.log('Atualizando curso...');
+      conferir(await window.cursos.atualizar({ id: idEdicao, ...dados }));
+      console.log('Curso atualizado');
+    }
     limpar();
     await atualizarLista('Curso salvo.');
   });
@@ -148,11 +160,12 @@ formulario.addEventListener('submit', evento => {
 
 document.getElementById('voltar').addEventListener('click', () => {
   if (ocupado) return;
-  window.navegacao.voltarMenu();
+  window.auth.abrirPrincipal();
 });
 
 document.getElementById('sair').addEventListener('click', () => {
   if (ocupado) return;
+  console.log('Saindo do sistema...');
   window.auth.sair();
 });
 
