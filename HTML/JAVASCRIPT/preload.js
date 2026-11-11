@@ -1,7 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('auth', {
   login: dados => ipcRenderer.invoke('auth:login', dados),
-  abrirMenu: () => ipcRenderer.send('auth:abrirMenu'),
+  abrirPrincipal: () => ipcRenderer.send('auth:abrirPrincipal'),
   sair: () => ipcRenderer.send('auth:sair')
 });
 contextBridge.exposeInMainWorld('navegacao', {
