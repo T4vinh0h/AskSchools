@@ -52,10 +52,15 @@ function botao(texto, acao) {
 }
 
 async function excluirAluno(id) {
+  console.log('Excluindo aluno...');
   const r = conferir(await window.alunos.excluir(id));
-  if (r.cancelado) return;
+  if (r.cancelado) {
+    console.log('Exclusão cancelada');
+    return;
+  }
   if (idEdicao === id) limpar();
   await atualizarLista('Aluno excluído.');
+  console.log('Aluno excluído');
 }
 
 function acoesAluno(aluno) {
@@ -136,8 +141,15 @@ formulario.addEventListener('submit', evento => {
   evento.preventDefault();
   executar(async () => {
     const dados = { nome: nome.value.trim(), email: email.value.trim(), telefone: telefone.value.trim() };
-    if (idEdicao === null) conferir(await window.alunos.criar(dados));
-    else conferir(await window.alunos.atualizar({ id: idEdicao, ...dados }));
+    if (idEdicao === null) {
+      console.log('Cadastrando aluno...');
+      conferir(await window.alunos.criar(dados));
+      console.log('Aluno cadastrado');
+    } else {
+      console.log('Atualizando aluno...');
+      conferir(await window.alunos.atualizar({ id: idEdicao, ...dados }));
+      console.log('Aluno atualizado');
+    }
     limpar();
     await atualizarLista('Aluno salvo.');
   });
@@ -145,11 +157,12 @@ formulario.addEventListener('submit', evento => {
 
 document.getElementById('voltar').addEventListener('click', () => {
   if (ocupado) return;
-  window.navegacao.voltarMenu();
+  window.auth.abrirPrincipal();
 });
 
 document.getElementById('sair').addEventListener('click', () => {
   if (ocupado) return;
+  console.log('Saindo do sistema...');
   window.auth.sair();
 });
 

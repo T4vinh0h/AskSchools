@@ -4,7 +4,7 @@ const { pathToFileURL } = require('node:url');
 const db = require('./HTML/JAVASCRIPT/db');
 const paginas = {
   login: pathToFileURL(path.join(__dirname, 'HTML/login.html')).href,
-  menu: pathToFileURL(path.join(__dirname, 'HTML/menu.html')).href,
+  principal: pathToFileURL(path.join(__dirname, 'HTML/principal.html')).href,
   alunos: pathToFileURL(path.join(__dirname, 'HTML/index.html')).href,
   cursos: pathToFileURL(path.join(__dirname, 'HTML/cursos.html')).href,
   matriculas: pathToFileURL(path.join(__dirname, 'HTML/matriculas.html')).href
@@ -59,9 +59,9 @@ ipcMain.handle('auth:login', async (evento, dados) => {
   }
 });
 
-ipcMain.on('auth:abrirMenu', evento => {
+ipcMain.on('auth:abrirPrincipal', evento => {
   if (!sessao) return;
-  janela.loadFile(path.join(__dirname, 'HTML/menu.html'));
+  janela.loadFile(path.join(__dirname, 'HTML/principal.html'));
 });
 
 ipcMain.on('navegacao:abrirAlunos', evento => {
@@ -78,7 +78,7 @@ ipcMain.on('navegacao:abrirMatriculas', evento => {
 });
 ipcMain.on('navegacao:voltarMenu', evento => {
   if (!sessao) return;
-  janela.loadFile(path.join(__dirname, 'HTML/menu.html'));
+  janela.loadFile(path.join(__dirname, 'HTML/principal.html'));
 });
 ipcMain.on('auth:sair', evento => {
   if (!sessao) return;
