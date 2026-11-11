@@ -88,8 +88,10 @@ async function atualizarLista(texto) {
 }
 
 async function excluirMatricula(id) {
+  console.log('Excluindo matrícula...');
   conferir(await window.matriculas.excluir(id));
   await atualizarLista('Matrícula excluída.');
+  console.log('Matrícula excluída');
 }
 
 function consultar() {
@@ -118,19 +120,22 @@ formulario.addEventListener('submit', evento => {
       curso_id: parseInt(curso.value),
       data_matricula: data_matricula.value
     };
+    console.log('Realizando matrícula...');
     conferir(await window.matriculas.criar(dados));
     formulario.reset();
     await atualizarLista('Matrícula realizada.');
+    console.log('Matrícula realizada');
   });
 });
 
 document.getElementById('voltar').addEventListener('click', () => {
   if (ocupado) return;
-  window.navegacao.voltarMenu();
+  window.auth.abrirPrincipal();
 });
 
 document.getElementById('sair').addEventListener('click', () => {
   if (ocupado) return;
+  console.log('Saindo do sistema...');
   window.auth.sair();
 });
 

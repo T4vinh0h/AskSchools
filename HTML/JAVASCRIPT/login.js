@@ -11,6 +11,7 @@ formLogin.addEventListener('submit', async evento => {
   enviando = true;
   entrar.disabled = true;
   mensagemLogin.textContent = 'Verificando acesso...';
+  console.log('Tentando login...');
 
   try {
     const resposta = await window.auth.login({
@@ -21,13 +22,19 @@ formLogin.addEventListener('submit', async evento => {
       mensagemLogin.textContent = resposta.erro;
       senha.value = '';
       senha.focus();
+      console.log('Login falhou');
       return;
     }
     senha.value = '';
-    window.auth.abrirMenu();
+    console.log('Login efetuado com sucesso');
+    // Delay de 3.95 segundos para mostrar a mensagem de verificação
+    setTimeout(() => {
+      window.auth.abrirPrincipal();
+    }, 3950);
   } catch {
     senha.value = '';
     mensagemLogin.textContent = 'Não foi possível entrar. Tente novamente.';
+    console.log('Erro ao tentar login');
   } finally {
     enviando = false;
     entrar.disabled = false;
