@@ -3,7 +3,14 @@ const usuario = document.getElementById('usuario');
 const senha = document.getElementById('senha');
 const entrar = document.getElementById('entrar');
 const mensagemLogin = document.getElementById('mensagemLogin');
+const botaoMostrarSenha = document.getElementById('btnMostrarSenha');
 let enviando = false;
+
+botaoMostrarSenha.addEventListener('click', () => {
+  const mostrar = senha.type === 'password';
+  senha.type = mostrar ? 'text' : 'password';
+  botaoMostrarSenha.textContent = mostrar ? 'Ocultar senha' : 'Mostrar senha';
+});
 
 formLogin.addEventListener('submit', async evento => {
   evento.preventDefault();
