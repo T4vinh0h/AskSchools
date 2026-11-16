@@ -8,11 +8,11 @@
     "start": "electron ."
   },
   "dependencies": {
-    "dotenv": "^18.0.9",
+    "dotenv": "^18.0.10",
     "mysql2": "^3.24.6"
   },
   "devDependencies": {
-    "electron": "^45.0.0"
+    "electron": "^45.3.3"
   },
   "engines": {
     "node": ">=22.12.0"
