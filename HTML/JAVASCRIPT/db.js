@@ -74,128 +74,117 @@ async function autenticar(dados) {
   return linhas[0];
 }
 
-async function listar() {
-  const [linhas] = await pool.execute(
-    'SELECT id, nome, email, telefone FROM alunos ORDER BY id DESC'
-  );
-  return linhas;
-}
+// ===== CÓDIGO ATUAL (COMENTADO - ATIVIDADE 4) =====
+// async function listar() {
+//   const [linhas] = await pool.execute(
+//     'SELECT id, nome, email, telefone FROM alunos ORDER BY id DESC'
+//   );
+//   return linhas;
+// }
 
-async function criar(dados) {
-  const { nome, email, telefone } = validarAluno(dados);
-  const [resultado] = await pool.execute(
-    'INSERT INTO alunos (nome, email, telefone) VALUES (?, ?, ?)',
-    [nome, email, telefone]
-  );
-  return { id: resultado.insertId };
-}
+// async function criar(dados) {
+//   const { nome, email, telefone } = validarAluno(dados);
+//   const [resultado] = await pool.execute(
+//     'INSERT INTO alunos (nome, email, telefone) VALUES (?, ?, ?)',
+//     [nome, email, telefone]
+//   );
+//   return { id: resultado.insertId };
+// }
 
-async function atualizar(dados) {
-  validarId(dados?.id);
-  const { nome, email, telefone } = validarAluno(dados);
-  const [r] = await pool.execute(
-    'UPDATE alunos SET nome = ?, email = ?, telefone = ? WHERE id = ?',
-    [nome, email, telefone, dados.id]
-  );
-  if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
-}
+// async function atualizar(dados) {
+//   validarId(dados?.id);
+//   const { nome, email, telefone } = validarAluno(dados);
+//   const [r] = await pool.execute(
+//     'UPDATE alunos SET nome = ?, email = ?, telefone = ? WHERE id = ?',
+//     [nome, email, telefone, dados.id]
+//   );
+//   if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
+// }
 
-async function excluir(id) {
-  validarId(id);
-  const [r] = await pool.execute(
-    'DELETE FROM alunos WHERE id = ?', [id]
-  );
-  if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
-  return { id };
-}
+// async function excluir(id) {
+//   validarId(id);
+//   const [r] = await pool.execute(
+//     'DELETE FROM alunos WHERE id = ?', [id]
+//   );
+//   if (!r.affectedRows) erroValidacao('Aluno não encontrado.');
+//   return { id };
+// }
+// ===== FIM DO CÓDIGO ATUAL =====
 
-function fechar() { return pool.end(); }
+// ===== CÓDIGO DA AULA 5 - INÍCIO =====
+const alunos = {
+  async listar() {
+    const [linhas] = await pool.execute(
+      'SELECT id, nome, email, telefone FROM alunos ORDER BY id DESC'
+    );
+    return linhas;
+  },
+  async criar(dados) {
+    const { nome, email, telefone } = validarAluno(dados);
+    const [resultado] = await pool.execute(
+      'INSERT INTO alunos (nome, email, telefone) VALUES (?, ?, ?)',
+      [nome, email, telefone]
+    );
+    return { id: resultado.insertId };
+  }
+};
+// ===== CÓDIGO DA AULA 5 - FIM =====
 
-// Funções para cursos
-function validarCurso(dados) {
-  const nome = texto(dados?.nome);
-  const carga_horaria = numero(dados?.carga_horaria);
-  const descricao = texto(dados?.descricao);
-  if (!nome || nome.length > 100) erroValidacao('Nome inválido.');
-  if (!carga_horaria || carga_horaria <= 0 || carga_horaria > 4294967295) erroValidacao('Carga horária inválida.');
-  if (descricao.length > 2000) erroValidacao('Descrição muito longa (máximo 2000 caracteres).');
-  return { nome, carga_horaria, descricao };
-}
+// ===== CÓDIGO DA AULA 7/8 - INÍCIO =====
+const cursos = {
+  async listar() {
+    const [linhas] = await pool.execute(
+      'SELECT id, nome, carga_horaria, descricao FROM cursos ORDER BY id DESC'
+    );
+    return linhas;
+  },
+  async criar(dados) {
+    const { nome, carga_horaria, descricao } = validarCurso(dados);
+    const [resultado] = await pool.execute(
+      'INSERT INTO cursos (nome, carga_horaria, descricao) VALUES (?, ?, ?)',
+      [nome, carga_horaria, descricao]
+    );
+    return { id: resultado.insertId };
+  },
+  async atualizar(dados) {
+    const id = validarId(dados?.id);
+    const { nome, carga_horaria, descricao } = validarCurso(dados);
+    const [resultado] = await pool.execute(
+      'UPDATE cursos SET nome = ?, carga_horaria = ?, descricao = ? WHERE id = ?',
+      [nome, carga_horaria, descricao, id]
+    );
+    return confirmarRegistro(resultado, id, 'Curso não encontrado. Atualize a lista.');
+  },
+  async excluir(id) {
+    const [resultado] = await pool.execute('DELETE FROM cursos WHERE id = ?', [validarId(id)]);
+    return confirmarRegistro(resultado, id, 'Curso não encontrado. Atualize a lista.');
+  }
+};
 
-async function listarCursos() {
-  const [linhas] = await pool.execute(
-    'SELECT id, nome, carga_horaria, descricao FROM cursos ORDER BY id DESC'
-  );
-  return linhas;
-}
-
-async function criarCurso(dados) {
-  const { nome, carga_horaria, descricao } = validarCurso(dados);
-  const [resultado] = await pool.execute(
-    'INSERT INTO cursos (nome, carga_horaria, descricao) VALUES (?, ?, ?)',
-    [nome, carga_horaria, descricao]
-  );
-  return { id: resultado.insertId };
-}
-
-async function atualizarCurso(dados) {
-  validarId(dados?.id);
-  const { nome, carga_horaria, descricao } = validarCurso(dados);
-  const [r] = await pool.execute(
-    'UPDATE cursos SET nome = ?, carga_horaria = ?, descricao = ? WHERE id = ?',
-    [nome, carga_horaria, descricao, dados.id]
-  );
-  if (!r.affectedRows) erroValidacao('Curso não encontrado.');
-}
-
-async function excluirCurso(id) {
-  validarId(id);
-  const [r] = await pool.execute(
-    'DELETE FROM cursos WHERE id = ?', [id]
-  );
-  if (!r.affectedRows) erroValidacao('Curso não encontrado.');
-  return { id };
-}
-
-// Funções para matrículas
-function validarMatricula(dados) {
-  const aluno_id = numero(dados?.aluno_id);
-  const curso_id = numero(dados?.curso_id);
-  const data_matricula = texto(dados?.data_matricula);
-  if (!aluno_id || aluno_id <= 0) erroValidacao('Aluno inválido.');
-  if (!curso_id || curso_id <= 0) erroValidacao('Curso inválido.');
-  if (!data_matricula) erroValidacao('Data da matrícula inválida.');
-  return { aluno_id, curso_id, data_matricula };
-}
-
-async function listarMatriculas() {
-  const [linhas] = await pool.execute(
-    `SELECT m.id, m.aluno_id, a.nome as aluno_nome, m.curso_id, c.nome as curso_nome, m.data_matricula
-     FROM matriculas m
-     JOIN alunos a ON m.aluno_id = a.id
-     JOIN cursos c ON m.curso_id = c.id
-     ORDER BY m.id DESC`
-  );
-  return linhas;
-}
-
-async function criarMatricula(dados) {
-  const { aluno_id, curso_id, data_matricula } = validarMatricula(dados);
-  const [resultado] = await pool.execute(
-    'INSERT INTO matriculas (aluno_id, curso_id, data_matricula) VALUES (?, ?, ?)',
-    [aluno_id, curso_id, data_matricula]
-  );
-  return { id: resultado.insertId };
-}
-
-async function excluirMatricula(id) {
-  validarId(id);
-  const [r] = await pool.execute(
-    'DELETE FROM matriculas WHERE id = ?', [id]
-  );
-  if (!r.affectedRows) erroValidacao('Matrícula não encontrada.');
-  return { id };
-}
+const matriculas = {
+  async listar() {
+    const [linhas] = await pool.execute(
+      `SELECT m.id, m.aluno_id, a.nome as aluno_nome, m.curso_id, c.nome as curso_nome, m.data_matricula
+       FROM matriculas m
+       JOIN alunos a ON m.aluno_id = a.id
+       JOIN cursos c ON m.curso_id = c.id
+       ORDER BY m.id DESC`
+    );
+    return linhas;
+  },
+  async criar(dados) {
+    const { aluno_id, curso_id, data_matricula } = validarMatricula(dados);
+    const [resultado] = await pool.execute(
+      'INSERT INTO matriculas (aluno_id, curso_id, data_matricula) VALUES (?, ?, ?)',
+      [aluno_id, curso_id, data_matricula]
+    );
+    return { id: resultado.insertId };
+  },
+  async excluir(id) {
+    const [resultado] = await pool.execute('DELETE FROM matriculas WHERE id = ?', [validarId(id)]);
+    return confirmarRegistro(resultado, id, 'Matrícula não encontrada. Atualize a lista.');
+  }
+};
 
 async function listarAlunosParaSelect() {
   const [linhas] = await pool.execute(
@@ -210,10 +199,154 @@ async function listarCursosParaSelect() {
   );
   return linhas;
 }
+// ===== CÓDIGO DA AULA 7/8 - FIM =====
 
-module.exports = {
-  listar, criar, atualizar, excluir, autenticar, fechar,
-  listarCursos, criarCurso, atualizarCurso, excluirCurso,
-  listarMatriculas, criarMatricula, excluirMatricula,
-  listarAlunosParaSelect, listarCursosParaSelect
+// ===== CÓDIGO DA AULA 6 - INÍCIO =====
+function confirmarRegistro(resultado, id, mensagem) {
+  if (!resultado.affectedRows) {
+    erroValidacao(mensagem);
+  }
+  return { id };
+}
+
+// Adicionar métodos atualizar e excluir ao objeto alunos
+alunos.atualizar = async function(dados) {
+  const id = validarId(dados?.id);
+  const { nome, email, telefone } = validarAluno(dados);
+  const [resultado] = await pool.execute(
+    'UPDATE alunos SET nome = ?, email = ?, telefone = ? WHERE id = ?',
+    [nome, email, telefone, id]
+  );
+  return confirmarRegistro(resultado, id, 'Aluno não encontrado. Atualize a lista.');
 };
+
+alunos.excluir = async function(id) {
+  const [resultado] = await pool.execute('DELETE FROM alunos WHERE id = ?', [validarId(id)]);
+  return confirmarRegistro(resultado, id, 'Aluno não encontrado. Atualize a lista.');
+};
+// ===== CÓDIGO DA AULA 6 - FIM =====
+
+function fechar() { return pool.end(); }
+
+// ===== CÓDIGO ATUAL (COMENTADO - ATIVIDADE 4) =====
+// Funções para cursos
+// function validarCurso(dados) {
+//   const nome = texto(dados?.nome);
+//   const carga_horaria = numero(dados?.carga_horaria);
+//   const descricao = texto(dados?.descricao);
+//   if (!nome || nome.length > 100) erroValidacao('Nome inválido.');
+//   if (!carga_horaria || carga_horaria <= 0 || carga_horaria > 4294967295) erroValidacao('Carga horária inválida.');
+//   if (descricao.length > 2000) erroValidacao('Descrição muito longa (máximo 2000 caracteres).');
+//   return { nome, carga_horaria, descricao };
+// }
+
+// async function listarCursos() {
+//   const [linhas] = await pool.execute(
+//     'SELECT id, nome, carga_horaria, descricao FROM cursos ORDER BY id DESC'
+//   );
+//   return linhas;
+// }
+
+// async function criarCurso(dados) {
+//   const { nome, carga_horaria, descricao } = validarCurso(dados);
+//   const [resultado] = await pool.execute(
+//     'INSERT INTO cursos (nome, carga_horaria, descricao) VALUES (?, ?, ?)',
+//     [nome, carga_horaria, descricao]
+//   );
+//   return { id: resultado.insertId };
+// }
+
+// async function atualizarCurso(dados) {
+//   validarId(dados?.id);
+//   const { nome, carga_horaria, descricao } = validarCurso(dados);
+//   const [r] = await pool.execute(
+//     'UPDATE cursos SET nome = ?, carga_horaria = ?, descricao = ? WHERE id = ?',
+//     [nome, carga_horaria, descricao, dados.id]
+//   );
+//   if (!r.affectedRows) erroValidacao('Curso não encontrado.');
+// }
+
+// async function excluirCurso(id) {
+//   validarId(id);
+//   const [r] = await pool.execute(
+//     'DELETE FROM cursos WHERE id = ?', [id]
+//   );
+//   if (!r.affectedRows) erroValidacao('Curso não encontrado.');
+//   return { id };
+// }
+
+// Funções para matrículas
+// function validarMatricula(dados) {
+//   const aluno_id = numero(dados?.aluno_id);
+//   const curso_id = numero(dados?.curso_id);
+//   const data_matricula = texto(dados?.data_matricula);
+//   if (!aluno_id || aluno_id <= 0) erroValidacao('Aluno inválido.');
+//   if (!curso_id || curso_id <= 0) erroValidacao('Curso inválido.');
+//   if (!data_matricula) erroValidacao('Data da matrícula inválida.');
+//   return { aluno_id, curso_id, data_matricula };
+// }
+
+// async function listarMatriculas() {
+//   const [linhas] = await pool.execute(
+//     `SELECT m.id, m.aluno_id, a.nome as aluno_nome, m.curso_id, c.nome as curso_nome, m.data_matricula
+//      FROM matriculas m
+//      JOIN alunos a ON m.aluno_id = a.id
+//      JOIN cursos c ON m.curso_id = c.id
+//      ORDER BY m.id DESC`
+//   );
+//   return linhas;
+// }
+
+// async function criarMatricula(dados) {
+//   const { aluno_id, curso_id, data_matricula } = validarMatricula(dados);
+//   const [resultado] = await pool.execute(
+//     'INSERT INTO matriculas (aluno_id, curso_id, data_matricula) VALUES (?, ?, ?)',
+//     [aluno_id, curso_id, data_matricula]
+//   );
+//   return { id: resultado.insertId };
+// }
+
+// async function excluirMatricula(id) {
+//   validarId(id);
+//   const [r] = await pool.execute(
+//     'DELETE FROM matriculas WHERE id = ?', [id]
+//   );
+//   if (!r.affectedRows) erroValidacao('Matrícula não encontrada.');
+//   return { id };
+// }
+
+// async function listarAlunosParaSelect() {
+//   const [linhas] = await pool.execute(
+//     'SELECT id, nome FROM alunos ORDER BY nome ASC'
+//   );
+//   return linhas;
+// }
+
+// async function listarCursosParaSelect() {
+//   const [linhas] = await pool.execute(
+//     'SELECT id, nome FROM cursos ORDER BY nome ASC'
+//   );
+//   return linhas;
+// }
+// ===== FIM DO CÓDIGO ATUAL =====
+
+// ===== CÓDIGO ATUAL (COMENTADO - ATIVIDADE 4) =====
+// module.exports = {
+//   listar, criar, atualizar, excluir, autenticar, fechar,
+//   listarCursos, criarCurso, atualizarCurso, excluirCurso,
+//   listarMatriculas, criarMatricula, excluirMatricula,
+//   listarAlunosParaSelect, listarCursosParaSelect
+// };
+// ===== FIM DO CÓDIGO ATUAL =====
+
+// ===== CÓDIGO DA AULA 5 - INÍCIO =====
+module.exports = {
+  autenticar,
+  alunos,
+  cursos,
+  matriculas,
+  listarAlunosParaSelect,
+  listarCursosParaSelect,
+  fechar
+};
+// ===== CÓDIGO DA AULA 5 - FIM =====
