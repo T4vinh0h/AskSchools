@@ -209,7 +209,6 @@ function confirmarRegistro(resultado, id, mensagem) {
   return { id };
 }
 
-// Adicionar métodos atualizar e excluir ao objeto alunos
 alunos.atualizar = async function(dados) {
   const id = validarId(dados?.id);
   const { nome, email, telefone } = validarAluno(dados);
@@ -275,7 +274,6 @@ function fechar() { return pool.end(); }
 //   return { id };
 // }
 
-// Funções para matrículas
 // function validarMatricula(dados) {
 //   const aluno_id = numero(dados?.aluno_id);
 //   const curso_id = numero(dados?.curso_id);
@@ -328,18 +326,14 @@ function fechar() { return pool.end(); }
 //   );
 //   return linhas;
 // }
-// ===== FIM DO CÓDIGO ATUAL =====
 
-// ===== CÓDIGO ATUAL (COMENTADO - ATIVIDADE 4) =====
 // module.exports = {
 //   listar, criar, atualizar, excluir, autenticar, fechar,
 //   listarCursos, criarCurso, atualizarCurso, excluirCurso,
 //   listarMatriculas, criarMatricula, excluirMatricula,
 //   listarAlunosParaSelect, listarCursosParaSelect
 // };
-// ===== FIM DO CÓDIGO ATUAL =====
 
-// ===== CÓDIGO DA AULA 5 - INÍCIO =====
 module.exports = {
   autenticar,
   alunos,
@@ -349,4 +343,3 @@ module.exports = {
   listarCursosParaSelect,
   fechar
 };
-// ===== CÓDIGO DA AULA 5 - FIM =====

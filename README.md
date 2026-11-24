@@ -1,11 +1,12 @@
 # Sistema-academico-simples
 
-Sistema acadêmico de cadastro de alunos desenvolvido com Electron e MySQL. Uma aplicação desktop completa com autenticação de usuários e operações CRUD (Create, Read, Update, Delete) em um banco de dados relacional.
+Sistema acadêmico completo desenvolvido com Electron e MySQL. Uma aplicação desktop com autenticação de usuários e cadastros de alunos, cursos e matrículas, com operações CRUD (Create, Read, Update, Delete) em um banco de dados relacional.
 
 ![Badge Node](https://img.shields.io/badge/Node.js-22+-green)
 ![Badge Electron](https://img.shields.io/badge/Electron-45+-blue)
 ![Badge MySQL](https://img.shields.io/badge/MySQL-8.0+-orange)
 ![Badge License](https://img.shields.io/badge/License-MIT-yellow)
+![Badge Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
 
 ## 📋 Índice
 
@@ -48,21 +49,39 @@ Este projeto é uma aplicação desktop desenvolvida para gerenciar cadastro de 
   - Formulário com validação de campos
   - Validação de e-mail (formato e unicidade)
   - Cadastro de nome, e-mail e telefone
+  - CRUD completo (criar, listar, atualizar, excluir)
 
-- **📋 Listagem de Alunos**
-  - Visualização de todos os alunos cadastrados
+- **📚 Cadastro de Cursos**
+  - Formulário com validação de campos
+  - Cadastro de nome, carga horária e descrição
+  - CRUD completo (criar, listar, atualizar, excluir)
+
+- **🎓 Cadastro de Matrículas**
+  - Formulário com selects para aluno e curso
+  - Cadastro de data da matrícula
+  - Operações de criar, listar e excluir
+  - Relacionamento entre alunos e cursos
+
+- **📋 Listagem de Registros**
+  - Visualização de todos os registros cadastrados
   - Ordenação por ID (mais recentes primeiro)
   - Tabela responsiva e organizada
+  - Atualização dinâmica da lista
 
-- **✏️ Edição de Alunos**
+- **✏️ Edição de Registros**
   - Modificação de dados existentes
   - Preenchimento automático do formulário
   - Cancelamento de edição
 
-- **🗑️ Exclusão de Alunos**
+- **🗑️ Exclusão de Registros**
   - Confirmação antes de excluir
   - Exclusão segura do banco de dados
   - Feedback visual ao usuário
+
+- **🖨️ Relatórios**
+  - Geração de relatórios impressos
+  - Formatação otimizada para impressão
+  - Cabeçalho com data de emissão
 
 ## 🛠 Tecnologias
 
@@ -194,6 +213,58 @@ Se você precisa alterar as credenciais:
 
 > ⚠️ **Nota de Segurança**: Em produção, altere estas credenciais e use senhas fortes.
 
+## 📚 Implementação Acadêmica
+
+Este projeto foi desenvolvido como parte de atividades acadêmicas, seguindo o roteiro de aulas sobre programação de aplicativos computacionais com integração de banco de dados.
+
+### Código da Aula vs Código Original
+
+O projeto contém duas versões de código em alguns arquivos:
+
+1. **Código Original (Comentado)**: Implementação anterior do projeto
+   - Marcado com `// ===== CÓDIGO ATUAL (COMENTADO - ATIVIDADE 4) =====`
+   - Preservado para referência e possível rollback
+
+2. **Código da Aula (Ativo)**: Implementação seguindo o roteiro acadêmico
+   - Marcado com `// ===== CÓDIGO DA AULA X - INÍCIO =====`
+   - Segue os padrões ensinados em aula
+
+### Atividades Implementadas
+
+#### Atividade 4 - Menu e Ponte IPC
+- Implementação de navegação entre telas usando `data-cadastro`
+- Ponte IPC `window.menu` para navegação
+- Função `apiCadastro(pagina)` para criar APIs padronizadas
+- Canais de navegação: `menu:abrir`, `menu:inicio`
+- Páginas temporárias para teste de rotas
+- Base compartilhada do cadastro (`cadastro.js`)
+
+#### Atividade 5 - Validação e INSERT
+- HTML definitivo de alunos com formulário completo
+- Validação de nome, e-mail e telefone
+- Implementação de SELECT e INSERT de alunos
+- Exposição da API de alunos via preload
+- Canais provisórios de inclusão e lista
+- Listagem e envio do formulário
+- Estilos dos botões e controles
+
+#### Atividade 6 - UPDATE e DELETE
+- Verificação do registro afetado (`confirmarRegistro`)
+- Implementação de UPDATE e DELETE de alunos
+- Registro completo de alunos com diálogo de confirmação
+- Funções de editar, excluir e montar botões
+- Coluna de ações na tabela
+- Criação ou atualização no submit
+- Cancelamento da edição
+- Estilos da lista e da tabela
+
+#### Atividades 7/8 - Cursos e Matrículas
+- Cadastro completo de cursos (CRUD)
+- Cadastro de matrículas (sem edição)
+- Relacionamento entre alunos e cursos
+- Selects dinâmicos para matrículas
+- Validação específica para cada entidade
+
 ## ▶️ Executando a Aplicação
 
 ### Iniciar a Aplicação
@@ -212,11 +283,34 @@ npm start
 
 ### Usando a Aplicação
 
+#### Tela Principal (Menu)
+- Acesso aos três cadastros: Alunos, Cursos e Matrículas
+- Botão "Sair" para encerrar a sessão
+
+#### Cadastro de Alunos
 - **Cadastrar**: Preencha nome, e-mail e telefone, clique em "Cadastrar"
-- **Listar**: A lista carrega automaticamente, clique em "Atualizar Lista" para recarregar
-- **Editar**: Clique no botão "Editar" de um aluno, modifique os dados e clique em "Salvar"
+- **Listar**: A lista carrega automaticamente, clique em "Atualizar lista" para recarregar
+- **Editar**: Clique no botão "Editar" de um aluno, modifique os dados e clique em "Salvar alterações"
 - **Excluir**: Clique no botão "Excluir" e confirme a operação
-- **Sair**: Clique no botão de logout para retornar à tela de login
+- **Cancelar edição**: Clique em "Cancelar edição" para descartar alterações
+- **Gerar relatório**: Clique para imprimir a lista de alunos
+
+#### Cadastro de Cursos
+- **Cadastrar**: Preencha nome, carga horária e descrição, clique em "Cadastrar"
+- **Listar**: A lista carrega automaticamente, clique em "Atualizar lista" para recarregar
+- **Editar**: Clique no botão "Editar" de um curso, modifique os dados e clique em "Salvar alterações"
+- **Excluir**: Clique no botão "Excluir" e confirme a operação
+- **Gerar relatório**: Clique para imprimir a lista de cursos
+
+#### Cadastro de Matrículas
+- **Cadastrar**: Selecione aluno e curso nos dropdowns, informe a data, clique em "Cadastrar"
+- **Listar**: A lista mostra aluno, curso e data da matrícula
+- **Excluir**: Clique no botão "Excluir" e confirme a operação
+- **Nota**: Matrículas não podem ser editadas, apenas excluídas e recadastradas
+
+#### Navegação
+- **Voltar ao menu**: Retorna à tela principal em qualquer cadastro
+- **Sair**: Encerra a sessão e volta à tela de login
 
 ## 📁 Estrutura do Projeto
 
@@ -230,9 +324,18 @@ Sistema-academico-simples/
 │   ├── JAVASCRIPT/            # Scripts JavaScript
 │   │   ├── db.js             # Camada de acesso ao banco de dados
 │   │   ├── login.js          # Lógica da tela de login
+│   │   ├── principal.js      # Lógica da tela principal (menu)
 │   │   ├── preload.js        # Ponte segura IPC (renderer ↔ main)
-│   │   └── renderer.js       # Lógica da interface principal
-│   ├── index.html            # Tela principal de cadastro
+│   │   ├── cadastro.js       # Lógica compartilhada de cadastros
+│   │   ├── renderer.js       # Configuração da tela de alunos
+│   │   ├── renderer_cursos.js # Configuração da tela de cursos
+│   │   ├── renderer_matriculas.js # Configuração da tela de matrículas
+│   │   ├── cursos.js         # Código antigo (comentado)
+│   │   └── matriculas.js     # Código antigo (comentado)
+│   ├── alunos.html           # Tela de cadastro de alunos
+│   ├── cursos.html           # Tela de cadastro de cursos
+│   ├── matriculas.html       # Tela de cadastro de matrículas
+│   ├── principal.html        # Tela principal (menu)
 │   └── login.html            # Tela de login
 ├── .env                       # Variáveis de ambiente (não commitado)
 ├── .gitattributes            # Configurações Git
@@ -282,12 +385,23 @@ O projeto segue a arquitetura multi-processo do Electron:
 | Canal | Função | Handler |
 |-------|--------|---------|
 | `auth:login` | Autenticação de usuário | `db.autenticar()` |
-| `auth:abrirCadastro` | Navegação após login | Carrega `index.html` |
+| `auth:abrirPrincipal` | Navegação após login | Carrega `principal.html` |
 | `auth:sair` | Logout da sessão | Carrega `login.html` |
-| `alunos:listar` | Listar todos os alunos | `db.listar()` |
-| `alunos:criar` | Criar novo aluno | `db.criar()` |
-| `alunos:atualizar` | Atualizar aluno existente | `db.atualizar()` |
-| `alunos:excluir` | Excluir aluno | `db.excluir()` |
+| `menu:abrir` | Abre tela de cadastro especificada | Carrega página correspondente |
+| `menu:inicio` | Volta ao menu principal | Carrega `principal.html` |
+| `alunos:listar` | Listar todos os alunos | `db.alunos.listar()` |
+| `alunos:criar` | Criar novo aluno | `db.alunos.criar()` |
+| `alunos:atualizar` | Atualizar aluno existente | `db.alunos.atualizar()` |
+| `alunos:excluir` | Excluir aluno | `db.alunos.excluir()` |
+| `cursos:listar` | Listar todos os cursos | `db.cursos.listar()` |
+| `cursos:criar` | Criar novo curso | `db.cursos.criar()` |
+| `cursos:atualizar` | Atualizar curso existente | `db.cursos.atualizar()` |
+| `cursos:excluir` | Excluir curso | `db.cursos.excluir()` |
+| `matriculas:listar` | Listar todas as matrículas | `db.matriculas.listar()` |
+| `matriculas:criar` | Criar nova matrícula | `db.matriculas.criar()` |
+| `matriculas:excluir` | Excluir matrícula | `db.matriculas.excluir()` |
+| `matriculas:listarAlunos` | Listar alunos para select | `db.listarAlunosParaSelect()` |
+| `matriculas:listarCursos` | Listar cursos para select | `db.listarCursosParaSelect()` |
 
 ## 🔒 Segurança
 
@@ -349,6 +463,22 @@ O projeto segue a arquitetura multi-processo do Electron:
 **Solução**:
 - Use um e-mail diferente
 - O campo `email` tem restrição `UNIQUE` no banco
+
+### Erro: "Edição não disponível para este cadastro"
+
+**Causa**: Tentativa de editar um cadastro que não possui função de atualização
+
+**Solução**:
+- Matrículas não possuem edição, apenas exclusão
+- Para alterar uma matrícula, exclua e cadastre novamente
+
+### Erro: "Cadastre um curso primeiro"
+
+**Causa**: Tentativa de matricular aluno sem cursos cadastrados
+
+**Solução**:
+- Cadastre pelo menos um curso antes de fazer matrículas
+- O select de cursos será desabilitado se não houver cursos disponíveis
 
 ### Erro: "Faça login para continuar"
 
